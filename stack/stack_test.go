@@ -1,4 +1,4 @@
-package godata
+package stack
 
 import (
 	"testing"
@@ -10,6 +10,9 @@ func TestNew(t *testing.T) {
 
 	if s.topNode != nil {
 		t.Errorf("topNode was not initialized to nil, got %v", s.topNode)
+	}
+	if s.len != 0 {
+		t.Errorf("Initial length value was not 0, got %v", s.len)
 	}
 }
 
@@ -56,6 +59,17 @@ func TestPop(t *testing.T) {
 	}
 }
 
+func TestPopEmptyStack(t *testing.T) {
+	var s Stack
+	s.New()
+
+	returnedVal := s.Pop()
+
+	if returnedVal != nil {
+		t.Errorf("Somehow didn't return nothing, got %v", returnedVal)
+	}
+}
+
 func TestPeek(t *testing.T) {
 	var s Stack
 	s.New()
@@ -66,16 +80,27 @@ func TestPeek(t *testing.T) {
 
 	returnedVal := s.Peek()
 
-	if s.topNode.value != 3 {
-		t.Errorf("Top of stack was modified, got %v", s.topNode.value)
-	}
-
 	if returnedVal != 3 {
 		t.Errorf("Failed to peek at top value, got %v", returnedVal)
 	}
+
+	if s.topNode.value != 3 {
+		t.Errorf("Top of stack was modified, got %v", s.topNode.value)
+	}
 }
 
-func TestLenInitial(t *testing.T) {
+func TestPeekEmptyStack(t *testing.T) {
+	var s Stack
+	s.New()
+
+	returnedVal := s.Peek()
+
+	if returnedVal != nil {
+		t.Errorf("Somehow didn't return nothing, got %v", returnedVal)
+	}
+}
+
+func TestLen_Initial(t *testing.T) {
 	var s Stack
 	s.New()
 
@@ -84,7 +109,7 @@ func TestLenInitial(t *testing.T) {
 	}
 }
 
-func TestLen(t *testing.T) {
+func TestLen_IncreasesWithPush(t *testing.T) {
 	var s Stack
 	s.New()
 
@@ -96,7 +121,7 @@ func TestLen(t *testing.T) {
 	}
 }
 
-func TestLenAfterPop(t *testing.T) {
+func TestLen_DecreasesWithPop(t *testing.T) {
 	var s Stack
 	s.New()
 

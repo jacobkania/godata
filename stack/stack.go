@@ -1,4 +1,4 @@
-package godata
+package stack
 
 import "sync"
 
@@ -23,6 +23,7 @@ func (s *Stack) New() {
 func (s *Stack) Push(value interface{}) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
+
 	newNode := node{value, s.topNode}
 	s.topNode = &newNode
 	s.len++
@@ -32,6 +33,11 @@ func (s *Stack) Push(value interface{}) {
 func (s *Stack) Pop() interface{} {
 	s.lock.Lock()
 	defer s.lock.Unlock()
+
+	if s.len == 0 {
+		return nil
+	}
+
 	topVal := s.topNode.value
 	s.topNode = s.topNode.prev
 	s.len--
@@ -42,6 +48,11 @@ func (s *Stack) Pop() interface{} {
 func (s *Stack) Peek() interface{} {
 	s.lock.Lock()
 	defer s.lock.Unlock()
+
+	if s.len == 0 {
+		return nil
+	}
+
 	return s.topNode.value
 }
 
