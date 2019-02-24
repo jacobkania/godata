@@ -3,11 +3,10 @@ package set
 // Set set data structure
 type Set struct {
 	vals map[interface{}]bool
-	len  int
 }
 
 // New creates a new Set
-func (s Set) New() Set {
+func (s *Set) New() Set {
 	return Set{make(map[interface{}]bool), 0}
 }
 
@@ -16,8 +15,8 @@ func (s *Set) Add(val interface{}) {
 	s.vals[val] = true
 }
 
-// AddMany adds many values to a set
-func (s *Set) AddMany(vals []interface{}) {
+// AddSlice adds many values to a set
+func (s *Set) AddSlice(vals []interface{}) {
 	for val := range vals {
 		s.Add(val)
 	}
@@ -45,5 +44,20 @@ func (s *Set) Remove(val interface{}) bool {
 
 // Len returns number of items in the set
 func (s *Set) Len() int {
-	return s.len
+	return len(s.vals)
+}
+
+// ToSlice returns the set transformed into a slice
+func (s *Set) ToSlice() []interface{} {
+	var slice []interface{}
+	currElemNum := 0
+	for k := range s.vals {
+		if currElemNum < cap(slice) {
+			slice[currElemNum] = k
+		} else {
+			slice = append(slice, k)
+		}
+		currElemNum++
+	}
+	return slice
 }

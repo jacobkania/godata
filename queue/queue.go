@@ -1,6 +1,10 @@
 package queue
 
-import "sync"
+// #include "./c/queue.c"
+// import "C"
+import (
+	"sync"
+)
 
 // Queue data structure
 type Queue struct {
